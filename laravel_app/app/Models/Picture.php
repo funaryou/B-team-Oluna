@@ -9,10 +9,6 @@ class Picture extends Model
     //
     protected $fillable = [
         'picture',
+        'content_id',
     ];
-
-    public function contents()
-    {
-        return $this->hasMany(Content::class, 'pictureId');
-    }
 }
