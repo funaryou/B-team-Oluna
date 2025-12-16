@@ -12,17 +12,15 @@ class Content extends Model
         'title',
         'text',
         'thumbnail',
-        'tagsId',
-        'pictureId',
     ];
 
-    public function tag()
+    public function tags()
     {
-        return $this->belongsTo(Tag::class, 'tagsId');
+        return $this->belongsToMany(Tag::class, 'post_tag', 'contents_id', 'tags_id');
     }
 
     public function picture()
     {
-        return $this->belongsTo(Picture::class, 'pictureId');
+        return $this->hasMany(Picture::class, 'contents_id');
     }
 }

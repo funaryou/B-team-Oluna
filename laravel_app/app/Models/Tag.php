@@ -13,6 +13,6 @@ class Tag extends Model
 
     public function contents()
     {
-        return $this->hasMany(Content::class, 'tagsId');
+        return $this->belongsToMany(Content::class, 'post_tag', 'tags_id', 'contents_id');
     }
 }

@@ -12,25 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('contents', function (Blueprint $table) {
+            $table->id();
             $table->integer('likes');      
-        $table->string('title');
-        $table->string('text');
-        $table->string('thumbnail');
-
-        // 外部キー
-        $table->unsignedBigInteger('tagsId');
-        $table->unsignedBigInteger('pictureId');
-
-        $table->timestamps();
-
-        // 外部キー制約
-        $table->foreign('tagsId')
-            ->references('id')->on('tags')
-            ->onDelete('cascade');
-
-        $table->foreign('pictureId')
-            ->references('id')->on('pictures')
-            ->onDelete('cascade');
+            $table->string('title');
+            $table->text('text');
+            $table->string('thumbnail');
+            $table->timestamps();
         });
     }
 
