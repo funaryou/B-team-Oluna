@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('likes');      
             $table->string('title');
-            $table->longText('text');
+            $table->text('text');
             $table->string('thumbnail');
             $table->timestamps();
         });
