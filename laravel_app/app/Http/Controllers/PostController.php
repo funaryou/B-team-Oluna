@@ -24,14 +24,4 @@ class PostController extends Controller
     {
         //
     }
-
-    // public function storeForm()
-    // {
-    //     //
-    // }
-
-    // public function store(Request $request)
-    // {
-    //     //
-    // }
 }
