@@ -12,7 +12,7 @@ class PostController extends Controller
     public function index()
     {
         // １ページ10件まで表示（更新日時降順）
-        $contents = Content::orderBy('created_at', 'desc')->pagenate(10);
+        $contents = Content::orderBy('created_at', 'desc')->paginate(10);
 
         return response()->json($contents);  // テスト：JSON形式で返す
         // return view('posts.index', compact('contents'));
