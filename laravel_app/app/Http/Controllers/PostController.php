@@ -21,7 +21,13 @@ class PostController extends Controller
     // 詳細表示
     public function show($id)
     {
-        //
+        $content = Content::find($id);
+
+        if (!$content) {
+            return response()->json(['error' => 'Content not found'], 404);
+        }
+
+        return response()->json($content);
     }
 
     // 検索
