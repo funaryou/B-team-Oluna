@@ -34,8 +34,12 @@ class PostController extends Controller
         // 検索キーワードを取得
         $query = $request->input('query');
 
-        // タイトルが一致する記事を取得（後で本文とタグも追加）
-        $contents = Content::where('title', 'LIKE', "%$query%")->get();
+        // タイトルまたはタグ名が一致する記事を取得
+        $contents = Content::where('title', 'LIKE', "%$query%")
+                            ->orWhereHas('tags', function($q) use ($query) {
+                                $q->where('tags', 'LIKE', "%$query%");
+                            })
+                            ->get();
 
         // 該当記事がなかった場合
         if ($contents->isEmpty()) {
