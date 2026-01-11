@@ -24,6 +24,7 @@ export default defineConfigWithVueTs(
         ignores: [
             "vendor/**",
             "public/**",
+            "resources/js/{actions,routes,wayfinder}/**",
         ],
     },
 )
