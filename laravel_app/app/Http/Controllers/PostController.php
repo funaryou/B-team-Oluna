@@ -8,14 +8,48 @@ use Illuminate\Http\Request;
 class PostController extends Controller
 {
     /**
+     * データ整形用共通メソッド
+     */
+    private function formatContent($content, $includeImages = false)
+    {
+        $formatted = [
+            'id' => $content->id,
+            'thumbnail' => $content->thumbnail,
+            'title' => $content->title,
+            'text' => $content->text,
+            'tag' => $content->tags->pluck('tags')->toArray(),  // 該当タグ名の配列
+        ];
+
+        // 詳細表示の場合はimagesを追加
+        if ($includeImages) {
+            $formatted['images'] = $content->picture->pluck('picture')->toArray();
+        }
+
+        return $formatted;
+    }
+
+    /**
      * 一覧表示
      */
     public function index()
     {
         // １ページ10件まで表示（更新日時降順）
-        $contents = Content::orderBy('created_at', 'desc')->paginate(10);
+        $contents = Content::with('tags')
+                            ->orderBy('created_at', 'desc')
+                            ->paginate(10);
 
-        return response()->json($contents);
+        // データ整形
+        $formattedData = $contents->map(function($content) {
+            return $this->formatContent($content, false);   // imagesは含めない
+        });
+
+        return response()->json([
+            'current_page' => $contents->currentPage(),
+            'per_page' => $contents->perPage(),
+            'total' => $contents->total(),
+            'last_page' => $contents->lastPage(),
+            'data' => $formattedData
+        ]);
     }
 
     /**
@@ -23,13 +57,11 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        $content = Content::find($id);
+        $content = Content::with(['tags', 'picture'])->findOrFail($id);
 
-        if (!$content) {
-            return response()->json(['error' => 'Content not found'], 404);
-        }
-
-        return response()->json($content);
+        return response()->json([
+            'data' => $this->formatContent($content, true)  // imagesを含める
+        ]);
     }
 
     /**
@@ -38,7 +70,6 @@ class PostController extends Controller
     public function search(Request $request)
     {
         $keyword = $request->input('keyword');
-        $page = $request->input('page');
 
         // タイトルまたはタグ名が一致する記事を取得（１ページ10件まで）
         $contents = Content::where('title', 'LIKE', "%$keyword%")
@@ -59,15 +90,9 @@ class PostController extends Controller
             ], 200);
         }
 
-        // 記事のデータ整形
+        // データ整形
         $formattedData = $contents->map(function($content) {
-            return [
-                'id' => $content->id,
-                'thumbnail' => $content->thumbnail,
-                'title' => $content->title,
-                'text' => $content->text,
-                'tag' => $content->tags->pluck('tags')->toArray(),  // 該当タグ名の配列
-            ];
+            return $this->formatContent($content, false);   // imagesは含めない
         });
 
         return response()->json([
