@@ -17,7 +17,7 @@ class PostController extends Controller
             'thumbnail' => $content->thumbnail,
             'title' => $content->title,
             'text' => $content->text,
-            'tag' => $content->tags->pluck('tags')->toArray(),  // 該当タグ名の配列
+            'tag' => $content->tags->pluck('tags')->toArray(),
         ];
 
         // 詳細表示の場合はimagesを追加
@@ -38,7 +38,6 @@ class PostController extends Controller
                             ->orderBy('created_at', 'desc')
                             ->paginate(10);
 
-        // データ整形
         $formattedData = $contents->map(function($content) {
             return $this->formatContent($content, false);   // imagesは含めない
         });
@@ -90,7 +89,6 @@ class PostController extends Controller
             ], 200);
         }
 
-        // データ整形
         $formattedData = $contents->map(function($content) {
             return $this->formatContent($content, false);   // imagesは含めない
         });
