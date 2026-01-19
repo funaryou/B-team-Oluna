@@ -13,6 +13,9 @@ import {Link} from "@inertiajs/vue3";
 
 <style lang="scss" scoped>
 .container {
+    position: sticky;
+    top: 0;
+    z-index: 999;
     height: 60px;
     padding: 8px 0;
     $rounding-radius: 30px;
