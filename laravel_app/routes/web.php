@@ -13,7 +13,6 @@ Route::get('/', function () {
             "likes" => 40,
             "thumbnail" => "",
             "tags" => [["tags" => "test"], ["tags" => "test2"]],
-            ""
         ],
         [
             "id" => 2,

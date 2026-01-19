@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import {router} from "@inertiajs/vue3";
-import {UrlMethodPair} from "@inertiajs/core";
 import blank from "@/assets/img/blank.png"
 
 interface Props {
     title: string
     tags: string[]
     imageUrl?: string
-    link: UrlMethodPair
+    link: string
 }
 defineProps<Props>()
 </script>
@@ -16,7 +15,7 @@ defineProps<Props>()
     <v-card
         rounded="xl"
         elevation="8"
-        :href="link.url"
+        :href="link"
         @click.prevent.stop="router.visit(link, {preserveState: true})"
     >
         <v-img
