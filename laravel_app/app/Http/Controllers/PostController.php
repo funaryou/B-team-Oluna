@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Content;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class PostController extends Controller
 {
@@ -17,7 +18,7 @@ class PostController extends Controller
             'thumbnail' => $content->thumbnail,
             'title' => $content->title,
             'text' => $content->text,
-            'tag' => $content->tags->pluck('tags')->toArray(),
+            'tags' => $content->tags->pluck('tags')->toArray(),
         ];
 
         // 詳細表示の場合はimagesを追加
@@ -42,12 +43,12 @@ class PostController extends Controller
             return $this->formatContent($content, false);   // imagesは含めない
         });
 
-        return response()->json([
-            'current_page' => $contents->currentPage(),
-            'per_page' => $contents->perPage(),
+        return Inertia::render("home", [
+            'currentPage' => $contents->currentPage(),
+            'perPage' => $contents->perPage(),
             'total' => $contents->total(),
-            'last_page' => $contents->lastPage(),
-            'data' => $formattedData
+            'lastPage' => $contents->lastPage(),
+            'items' => $formattedData
         ]);
     }
 
@@ -58,7 +59,7 @@ class PostController extends Controller
     {
         $content = Content::with(['tags', 'picture'])->findOrFail($id);
 
-        return response()->json([
+        return Inertia::render("posts/detail", [
             'data' => $this->formatContent($content, true)  // imagesを含める
         ]);
     }

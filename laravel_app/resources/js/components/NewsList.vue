@@ -16,7 +16,7 @@ defineProps<{
             class="item"
             :image-url="item.thumbnail"
             :title="item.title"
-            :tags="item.tags.map(e => e.tags)"
+            :tags="item.tags"
             :link="detail(item.id).url"
         />
     </div>
