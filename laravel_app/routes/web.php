@@ -1,30 +1,10 @@
 <?php
 
+use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
-Route::get('/', function () {
-    // サンプルデータ
-    return Inertia::render("home", ["items" => [
-        [
-            "id" => 1,
-            "title" => "Testtest",
-            "text" => "Test Text",
-            "likes" => 40,
-            "thumbnail" => "",
-            "tags" => [["tags" => "test"], ["tags" => "test2"]],
-        ],
-        [
-            "id" => 2,
-            "title" => "Testtest",
-            "text" => "Test Text2",
-            "likes" => 40,
-            "thumbnail" => "",
-            "tags" => [["tags" => "test"], ["tags" => "test2"]]
-        ],
-    ]]);
-});
+Route::get('/', [PostController::class, "index"])->name("web.top");
 
-Route::get("/posts/{id}", function () {
-    return Inertia::render("posts/detail");
-})->name('web.posts.detail');
+Route::get("/posts/{id}", [PostController::class, "show"])->name('web.posts.detail');
+
+Route::get("/search", [PostController::class, "search"])->name('web.search');
