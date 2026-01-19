@@ -19,7 +19,7 @@ await createInertiaApp({
                     light: {
                         colors: {
                             background: "#FFCB50",
-                            "nav-background": "#8C6057",
+                            primary: "#8C6057",
                         },
                     },
                 },

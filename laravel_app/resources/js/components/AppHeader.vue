@@ -4,7 +4,7 @@ import {Link} from "@inertiajs/vue3";
 </script>
 
 <template>
-<header class="container bg-nav-background">
+<header class="container bg-primary">
     <Link href="/">
         <v-img :src="siteLogo" />
     </Link>
