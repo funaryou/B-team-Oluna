@@ -13,7 +13,7 @@ defineProps<{
         <NewsListItem
             v-for="item in items"
             :key="item.id"
-            class="w-100"
+            class="item"
             :image-url="item.thumbnail"
             :title="item.title"
             :tags="item.tags.map(e => e.tags)"
@@ -22,6 +22,20 @@ defineProps<{
     </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
+.item {
+    flex-basis: 100%;
+}
 
+@media screen and (min-width: 960px) {
+    .item {
+        flex-basis: calc(50% - 8px);
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .item {
+        flex-basis: calc(33% - 8px);
+    }
+}
 </style>
