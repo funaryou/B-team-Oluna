@@ -23,17 +23,20 @@ defineProps<{
 </template>
 
 <style lang="scss" scoped>
+@use "vuetify/settings";
+@use "sass:map";
+
 .item {
     flex-basis: 100%;
 }
 
-@media screen and (min-width: 960px) {
+@media (map.get(settings.$display-breakpoints, "sm")) or (map.get(settings.$display-breakpoints, "md")) {
     .item {
         flex-basis: calc(50% - 8px);
     }
 }
 
-@media screen and (min-width: 1200px) {
+@media (map.get(settings.$display-breakpoints, "lg-and-up")) {
     .item {
         flex-basis: calc(33% - 8px);
     }
