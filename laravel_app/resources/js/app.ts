@@ -3,6 +3,7 @@ import {createApp, DefineComponent, h} from "vue"
 import {createVuetify} from "vuetify";
 import Default from "@/layouts/default.vue";
 import "vuetify/styles"
+import "@mdi/font/css/materialdesignicons.min.css"
 
 await createInertiaApp({
     resolve(name) {

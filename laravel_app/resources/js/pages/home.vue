@@ -3,17 +3,20 @@ import {Content} from "@/types/content";
 import NewsList from "@/components/NewsList.vue";
 
 interface Props {
-    items: Content[]
+    items: Content[],
+    currentPage: number,
+    lastPage: number,
 }
 defineProps<Props>()
 </script>
 
 <template>
 <div>
-    <NewsList :items="items" />
-    <p v-if="items.length === 0" class="text-center">
-        記事はまだありません
-    </p>
+    <NewsList
+        :items="items"
+        :current-page="currentPage"
+        :page-count="lastPage"
+    />
 </div>
 </template>
 
