@@ -19,6 +19,7 @@ class PostController extends Controller
             'title' => $content->title,
             'text' => $content->text,
             'tags' => $content->tags->pluck('tags')->toArray(),
+            'likes' => $content->likes,
         ];
 
         // 詳細表示の場合はimagesを追加
