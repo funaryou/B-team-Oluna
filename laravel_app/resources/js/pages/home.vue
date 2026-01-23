@@ -16,6 +16,7 @@ defineProps<Props>()
         :items="items"
         :current-page="currentPage"
         :page-count="lastPage"
+        no-result-text="記事はまだありません"
     />
 </div>
 </template>

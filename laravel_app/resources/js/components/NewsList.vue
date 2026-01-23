@@ -9,6 +9,7 @@ const props = defineProps<{
     items: Content[],
     currentPage: number,
     pageCount: number,
+    noResultText: string
 }>()
 
 const page = computed({
@@ -37,7 +38,7 @@ const page = computed({
             />
         </div>
         <p v-if="items.length === 0" class="text-center">
-            記事はまだありません
+            {{ noResultText }}
         </p>
         <v-pagination v-model="page" :length="pageCount" />
     </div>

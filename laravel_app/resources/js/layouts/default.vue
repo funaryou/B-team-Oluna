@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import AppHeader from "@/components/AppHeader.vue";
 import magnify from "@/assets/vectors/magnify.svg"
+import SearchSheet from "@/components/SearchSheet.vue";
+import {ref} from "vue";
+
+const showSearch = ref(false)
 </script>
 
 <template>
@@ -12,6 +16,7 @@ import magnify from "@/assets/vectors/magnify.svg"
             icon
             size="large"
             color="primary"
+            @click="showSearch = true"
         >
             <v-img
                 :src="magnify"
@@ -20,6 +25,7 @@ import magnify from "@/assets/vectors/magnify.svg"
                 height="24px"
             />
         </v-fab>
+        <SearchSheet v-model="showSearch" />
 
         <v-main>
             <v-container>
