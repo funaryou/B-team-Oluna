@@ -3,6 +3,7 @@ import {createApp, DefineComponent, h} from "vue"
 import {createVuetify} from "vuetify";
 import Default from "@/layouts/default.vue";
 import "vuetify/styles"
+import "@mdi/font/css/materialdesignicons.min.css"
 
 await createInertiaApp({
     resolve(name) {
@@ -12,7 +13,19 @@ await createInertiaApp({
         return page
     },
     setup({ el, App, props, plugin }) {
-        const vuetify = createVuetify({})
+        const vuetify = createVuetify({
+            theme: {
+                defaultTheme: "light",
+                themes: {
+                    light: {
+                        colors: {
+                            background: "#FFCB50",
+                            primary: "#8C6057",
+                        },
+                    },
+                },
+            },
+        })
         createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(vuetify)

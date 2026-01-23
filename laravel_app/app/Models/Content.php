@@ -21,6 +21,6 @@ class Content extends Model
 
     public function picture()
     {
-        return $this->hasMany(Picture::class, 'contents_id');
+        return $this->hasMany(Picture::class, 'content_id');
     }
 }
