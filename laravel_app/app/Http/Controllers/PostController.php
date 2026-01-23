@@ -80,27 +80,16 @@ class PostController extends Controller
                             ->with('tags')
                             ->paginate(10);
 
-        // 該当記事がなかった場合
-        if ($contents->isEmpty()) {
-            return response()->json([
-                'current_page' => 1,
-                'per_page' => 10,
-                'total' => 0,
-                'data' => [],
-                'message' => '見つかりませんでした',
-            ], 200);
-        }
-
         $formattedData = $contents->map(function($content) {
             return $this->formatContent($content, false);   // imagesは含めない
         });
 
-        return response()->json([
-            'current_page' => $contents->currentPage(),
-            'per_page' => $contents->perPage(),
+        return Inertia::render("search", [
+            'currentPage' => $contents->currentPage(),
+            'perPage' => $contents->perPage(),
             'total' => $contents->total(),
-            'last_page' => $contents->lastPage(),
-            'data' => $formattedData
+            'lastPage' => $contents->lastPage(),
+            'items' => $formattedData
         ]);
     }
 }
