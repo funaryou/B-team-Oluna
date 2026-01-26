@@ -9,4 +9,5 @@ Route::get("/posts/{id}", [PostController::class, "show"])->name('web.posts.deta
 
 Route::get("/search", [PostController::class, "search"])->name('web.search');
 
+Route::get('/admin/posts/create', [Admin\PostController::class, 'create'])->name('admin.posts.create');
 Route::post('/admin/posts', [Admin\PostController::class, 'store'])->name('admin.posts.store');

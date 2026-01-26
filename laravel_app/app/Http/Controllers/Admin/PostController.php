@@ -12,6 +12,14 @@ use Inertia\Inertia;
 class PostController extends Controller
 {
     /**
+     * 投稿フォームを表示
+     */
+    public function create()
+    {
+        return Inertia::render('Admin/PostCreate');
+    }
+
+    /**
      * 新規投稿
      */
     public function store(Request $request)
