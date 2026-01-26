@@ -71,6 +71,13 @@ class PostController extends Controller
             }
         }
 
-        return redirect()->route('web.top')->with('success', '投稿が完了しました');
+        // return redirect()->route('web.top')->with('success', '投稿が完了しました');
+
+
+        // Postmanテスト用にJSON返却に変更
+        return response()->json([
+            'message' => '投稿が完了しました',
+            'content' => $content->load(['tags', 'picture'])
+        ], 201);
     }
 }
