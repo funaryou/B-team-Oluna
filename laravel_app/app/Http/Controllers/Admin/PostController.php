@@ -60,18 +60,24 @@ class PostController extends Controller
 
         // 記事内画像を保存
         if (!empty($validated['images'])) {
+            $pictureData = [];
+
             foreach ($validated['images'] as $image) {
                 $imagePath = $image->store('PostImage', 'public');
 
-                Picture::create([
+                $pictureData[] = [
                     'content_id' => $content->id,
-                    'picture' => $imagePath,
-                ]);
+                    'picture'    => $imagePath,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
             }
+
+            Picture::insert($pictureData);  // 複数画像をまとめて保存
         }
 
-        // return redirect()->route('web.top')->with('success', '投稿が完了しました');
 
+        // return redirect()->route('web.top')->with('success', '投稿が完了しました');
 
         // Postmanテスト用にJSON返却に変更
         return response()->json([
