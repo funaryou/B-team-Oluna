@@ -42,7 +42,6 @@ class PostController extends Controller
             'title' => $validated['title'],
             'text' => $validated['text'],
             'thumbnail' => $thumbnailPath,
-            'likes' => 0,
         ]);
 
         // タグを紐付け（自由入力対応）
