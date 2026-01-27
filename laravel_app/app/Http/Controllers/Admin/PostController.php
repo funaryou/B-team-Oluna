@@ -7,6 +7,7 @@ use App\Models\Content;
 use App\Models\Picture;
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class PostController extends Controller
@@ -34,47 +35,46 @@ class PostController extends Controller
             'images.*'  => 'image|max:2048',
         ]);
 
-        // サムネ画像を保存
-        $thumbnailPath = $request->file('thumbnail')->store('thumbnailImage', 'public');
 
-        // 記事を作成
-        $content = Content::create([
-            'title' => $validated['title'],
-            'text' => $validated['text'],
-            'thumbnail' => $thumbnailPath,
-        ]);
+        $content = DB::transaction(function () use ($validated, $request) {
+            // サムネ画像を保存
+            $thumbnailPath = $request->file('thumbnail')->store('thumbnailImage', 'public');
 
-        // タグを紐付け（自由入力対応）
-        if (!empty($validated['tags'])) {
-            $tagIds = [];
+            // 記事を作成
+            $content = Content::create([
+                'title' => $validated['title'],
+                'text' => $validated['text'],
+                'thumbnail' => $thumbnailPath,
+            ]);
 
-            foreach ($validated['tags'] as $tagName) {
-                // タグが存在すれば取得、なければ新規作成
-                $tag = Tag::firstOrCreate(['tags' => $tagName]);
-                $tagIds[] = $tag->id;
+            // タグを紐付け
+            if (!empty($validated['tags'])) {
+                $tagIds = [];
+                foreach ($validated['tags'] as $tagName) {
+                    $tag = Tag::firstOrCreate(['tags' => $tagName]);
+                    $tagIds[] = $tag->id;
+                }
+                $content->tags()->attach($tagIds);
             }
 
-            // 中間テーブルに保存
-            $content->tags()->attach($tagIds);
-        }
-
-        // 記事内画像を保存
-        if (!empty($validated['images'])) {
-            $pictureData = [];
-
-            foreach ($validated['images'] as $image) {
-                $imagePath = $image->store('PostImage', 'public');
-
-                $pictureData[] = [
-                    'content_id' => $content->id,
-                    'picture'    => $imagePath,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ];
+            // 記事内画像を保存
+            if (!empty($validated['images'])) {
+                $pictureData = [];
+                foreach ($validated['images'] as $image) {
+                    $imagePath = $image->store('PostImage', 'public');
+                    $pictureData[] = [
+                        'content_id' => $content->id,
+                        'picture'    => $imagePath,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                }
+                Picture::insert($pictureData);
             }
 
-            Picture::insert($pictureData);  // 複数画像をまとめて保存
-        }
+            // 作成したコンテンツを返す
+            return $content;
+        });
 
 
         // return redirect()->route('web.top')->with('success', '投稿が完了しました');
