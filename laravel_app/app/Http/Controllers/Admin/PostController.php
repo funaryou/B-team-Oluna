@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StorePostRequest;
 use App\Models\Content;
 use App\Models\Picture;
 use App\Models\Tag;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -23,18 +23,9 @@ class PostController extends Controller
     /**
      * 新規投稿
      */
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
-        $validated = $request->validate([
-            'title'     => 'required|string|max:255',
-            'tags'      => 'nullable|array',
-            'tags.*'    => 'string|max:50',
-            'text'      => 'required|string|min:10',
-            'thumbnail' => 'required|image|max:2048',
-            'images'    => 'nullable|array|max:5', // 最大５枚まで（仮）
-            'images.*'  => 'image|max:2048',
-        ]);
-
+        $validated = $request->validated();
 
         $content = DB::transaction(function () use ($validated, $request) {
             // サムネ画像を保存
