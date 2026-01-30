@@ -1,11 +1,22 @@
-<script setup lang="ts">
+<script lang="ts">
+import DetailLayout from "@/layouts/DetailLayout.vue";
+export default {
+    layout: DetailLayout
+}
+</script>
 
+<script setup lang="ts">
+import PostDetail from "@/components/PostDetail.vue";
+
+const { data } = defineProps<{ data: any }>()
 </script>
 
 <template>
-    <p>Hello World</p>
+    <div>
+        <PostDetail :data="data" />
+    </div>
 </template>
 
 <style scoped>
-
+    
 </style>
