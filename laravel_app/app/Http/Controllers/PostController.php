@@ -15,7 +15,7 @@ class PostController extends Controller
     {
         $formatted = [
             'id' => $content->id,
-            'thumbnail' => $content->thumbnail,
+            'thumbnail' => $content->thumbnail ? '/storage/' . $content->thumbnail : null,
             'title' => $content->title,
             'text' => $content->text,
             'tags' => $content->tags->pluck('tags')->toArray(),
@@ -24,7 +24,9 @@ class PostController extends Controller
 
         // 詳細表示の場合はimagesを追加
         if ($includeImages) {
-            $formatted['images'] = $content->picture->pluck('picture')->toArray();
+            $formatted['images'] = $content->picture->map(function($item) {
+                return "/storage/" . $item->picture;
+            })->toArray();
         }
 
         return $formatted;
@@ -59,6 +61,7 @@ class PostController extends Controller
     public function show($id)
     {
         $content = Content::with(['tags', 'picture'])->findOrFail($id);
+
 
         return Inertia::render("posts/detail", [
             'data' => $this->formatContent($content, true)  // imagesを含める

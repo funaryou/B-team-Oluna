@@ -31,49 +31,90 @@ const allImages = computed(() => {
 
 <template>
     <div>
-        <v-container class="max-w-[1200px] mx-auto px-4 pb-[340px]">
-            <h1 class="text-[32px] font-normal leading-[1.2] font-['Regular'] py-[10px] mb-4 mt-0">{{ data.title }}</h1>
+        <v-container class="post-container">
+            <h1 class="post-title">{{ data.title }}</h1>
             <v-img
                 v-if="data.thumbnail"
                 :src="data.thumbnail"
                 width="100%"
                 aspect-ratio="1.89"
                 cover
-                class="post-thumbnail w-full h-auto thumbnail-rounded mb-4"
+                class="post-thumbnail"
             />
-            <div v-if="data.tags && data.tags.length > 0" class="text-right p-0 mb-4">
+            <div v-if="data.tags && data.tags.length > 0" class="tags-container">
                 <v-chip
                     v-for="tag in data.tags"
                     :key="tag"
-                    class="h-auto min-h-0 p-0 display-inline-block line-height-1.2"
+                    class="tag-chip"
                     variant="text"
                     :ripple="false"
                 >
                     #{{ tag }}
                 </v-chip>
             </div>
-            <div class="p-0 text-break-all whitespace-pre-wrap" style="padding-bottom: 400px;">{{ data.text }}</div>
-            <ImageCarousel 
-                v-if="allImages.length > 0"
-                :images="allImages"
-                v-model="currentImageIndex"
-                class="fixed-bottom-carousel"
-            />
+            <div class="post-text">{{ data.text }}</div>
         </v-container>
+        <ImageCarousel
+            v-if="allImages.length > 0"
+            :images="allImages"
+            v-model="currentImageIndex"
+            class="fixed-bottom-carousel"
+        />
     </div>
 </template>
 
 <style scoped>
-.thumbnail-rounded {
+/* Replicating Tailwind classes with standard CSS */
+
+.post-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 16px;
+}
+
+.post-title {
+    font-size: 32px;
+    font-weight: normal;
+    line-height: 1.2;
+    font-family: 'Regular', sans-serif;
+    padding: 10px 0;
+    margin: 0 0 16px 0;
+}
+
+.post-thumbnail {
+    width: 100%;
+    height: auto;
     border-radius: 12px;
+    margin-bottom: 16px;
 }
 
-.text-break-all {
+.tags-container {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 0;
+    margin-bottom: 16px;
+}
+
+.tag-chip {
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    display: inline-block;
+    line-height: 1.2;
+}
+
+.post-text {
+    padding: 0;
     word-break: break-all;
+    white-space: pre-wrap;
+    padding-bottom: 32px;
 }
 
+/* Existing styles */
 .fixed-bottom-carousel {
-    position: fixed;
+    position: sticky;
     bottom: 0;
     left: 0;
     width: 100%;
