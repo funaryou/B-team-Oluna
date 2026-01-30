@@ -90,7 +90,10 @@ const allImages = computed(() => {
 }
 
 .tags-container {
-    text-align: right;
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 10px;
     padding: 0;
     margin-bottom: 16px;
 }
