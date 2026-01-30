@@ -13,7 +13,8 @@ const emit = defineEmits<{
 
 const searchText = ref("")
 
-const visitSearchResult = () => {
+const visitSearchResult = (e: { keyCode: number; }) => {
+    if (e.keyCode !== 13) return
     router.visit(search({query: {keyword: searchText.value}}))
     emit("update:model-value", false)
 }
