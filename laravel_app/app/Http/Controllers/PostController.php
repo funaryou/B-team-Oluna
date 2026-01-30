@@ -15,7 +15,7 @@ class PostController extends Controller
     {
         $formatted = [
             'id' => $content->id,
-            'thumbnail' => '/storage/' . $content->thumbnail,
+            'thumbnail' => $content->thumbnail ? '/storage/' . $content->thumbnail : null,
             'title' => $content->title,
             'text' => $content->text,
             'tags' => $content->tags->pluck('tags')->toArray(),
