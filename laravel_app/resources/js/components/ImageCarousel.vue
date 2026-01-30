@@ -15,7 +15,6 @@ interface Emits {
 const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
 
-const currentImage = computed(() => props.images[props.modelValue])
 const hasNext = computed(() => props.modelValue < props.images.length - 1)
 const hasPrevious = computed(() => props.modelValue > 0)
 
@@ -29,10 +28,6 @@ const previousImage = () => {
     if (hasPrevious.value) {
         emit('update:modelValue', props.modelValue - 1)
     }
-}
-
-const selectImage = (index: number) => {
-    emit('update:modelValue', index)
 }
 
 // Swipe detection implementation
@@ -63,7 +58,7 @@ const handleSwipe = () => {
 
 <template>
     <div 
-        class="relative w-full h-[205px] lg:h-[400px] overflow-hidden flex flex-col justify-center glass-effect"
+        class="carousel-container glass-effect"
         @touchstart="handleTouchStart"
         @touchend="handleTouchEnd"
     >
@@ -86,7 +81,18 @@ const handleSwipe = () => {
             </div>
 
             <div class="image-section">
-                <img :src="currentImage" alt="Carousel Image" class="main-image" />
+                <!-- 
+                     Using v-for and v-show to preload all images.
+                     This improves perceived performance when switching images.
+                -->
+                <img 
+                    v-for="(image, index) in images"
+                    :key="index"
+                    :src="image"
+                    v-show="modelValue === index"
+                    alt="Carousel Image"
+                    class="main-image"
+                />
             </div>
             
             <div 
@@ -110,6 +116,23 @@ const handleSwipe = () => {
 </template>
 
 <style scoped>
+/* Transformed Tailwind classes to standard CSS */
+.carousel-container {
+    position: relative;
+    width: 100%;
+    height: 205px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+@media (min-width: 1024px) {
+    .carousel-container {
+        height: 400px;
+    }
+}
+
 .glass-effect {
     background: rgba(255, 203, 80, 0.4);
     backdrop-filter: blur(4px);
