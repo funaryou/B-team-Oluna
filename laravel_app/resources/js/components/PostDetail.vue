@@ -53,13 +53,13 @@ const allImages = computed(() => {
                 </v-chip>
             </div>
             <div class="post-text">{{ data.text }}</div>
-            <ImageCarousel 
-                v-if="allImages.length > 0"
-                :images="allImages"
-                v-model="currentImageIndex"
-                class="fixed-bottom-carousel"
-            />
         </v-container>
+        <ImageCarousel
+            v-if="allImages.length > 0"
+            :images="allImages"
+            v-model="currentImageIndex"
+            class="fixed-bottom-carousel"
+        />
     </div>
 </template>
 
@@ -70,7 +70,6 @@ const allImages = computed(() => {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 16px;
-    padding-bottom: 340px;
 }
 
 .post-title {
@@ -110,12 +109,12 @@ const allImages = computed(() => {
     padding: 0;
     word-break: break-all;
     white-space: pre-wrap;
-    padding-bottom: 400px;
+    padding-bottom: 32px;
 }
 
 /* Existing styles */
 .fixed-bottom-carousel {
-    position: fixed;
+    position: sticky;
     bottom: 0;
     left: 0;
     width: 100%;
